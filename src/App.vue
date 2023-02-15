@@ -1,10 +1,12 @@
-<script setup lang="ts">
-import { RouterView } from "vue-router";
-</script>
-
 <template>
-  <RouterView />
+  <router-view />
+  <navigation-bar />
 </template>
+
+<script lang="ts" setup>
+import { RouterView } from "vue-router";
+import NavigationBar from "@/components/NavigationBar.vue";
+</script>
 
 <style>
 @tailwind base;
@@ -49,5 +51,14 @@ import { RouterView } from "vue-router";
   font-weight: bold;
   font-style: normal;
   font-display: swap;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

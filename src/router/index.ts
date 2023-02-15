@@ -1,15 +1,61 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
+import type { IconTypes } from "@/components/RemixIcon.vue";
+import HomeView from "@/views/Home/HomeView.vue";
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: HomeView,
+interface RouteMeta {
+  meta: {
+    icon: IconTypes;
+  };
+}
+
+export const mainRoutes: (RouteRecordRaw & RouteMeta)[] = [
+  {
+    path: "/",
+    name: "home",
+    component: HomeView,
+    meta: {
+      icon: "home",
     },
-  ],
-});
+  },
+  {
+    path: "/reminders",
+    name: "reminders",
+    component: HomeView,
+    meta: {
+      icon: "calendar",
+    },
+  },
+  {
+    path: "/resolutions",
+    name: "resolutions",
+    component: HomeView,
+    meta: {
+      icon: "list",
+    },
+  },
+  {
+    path: "/notes",
+    name: "notes",
+    component: HomeView,
+    meta: {
+      icon: "booklet",
+    },
+  },
+  {
+    path: "/groceries",
+    name: "groceries",
+    component: HomeView,
+    meta: {
+      icon: "store",
+    },
+  },
+];
 
-export default router;
+export const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [...mainRoutes],
+});
