@@ -1,7 +1,7 @@
 <template>
   <header
-    :class="{ 'px-6': !noGutters }"
-    class="py-8 bg-primary-500 text-white rounded-bl-2xl overflow-hidden"
+    :class="{ 'px-6': !noGutters, 'py-8': !small, 'py-6': small }"
+    class="bg-primary-500 text-white rounded-bl-2xl overflow-hidden"
   >
     <slot />
   </header>
@@ -10,5 +10,6 @@
 <script lang="ts" setup>
 defineProps<{
   noGutters?: boolean;
+  small?: boolean;
 }>();
 </script>
