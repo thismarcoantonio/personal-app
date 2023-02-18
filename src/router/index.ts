@@ -6,6 +6,9 @@ import {
 import type { IconTypes } from "@/components/RemixIcon.vue";
 import HomeView from "@/views/Home/HomeView.vue";
 import RemindersView from "@/views/Reminders/RemindersView.vue";
+import ResolutionsView from "@/views/Resolutions/ResolutionsView.vue";
+import NotesView from "@/views/Notes/NotesView.vue";
+import GroceriesView from "@/views/Groceries/GroceriesView.vue";
 
 interface RouteMeta {
   meta: {
@@ -18,41 +21,31 @@ export const mainRoutes: (RouteRecordRaw & RouteMeta)[] = [
     path: "/",
     name: "home",
     component: HomeView,
-    meta: {
-      icon: "home",
-    },
+    meta: { icon: "home" },
   },
   {
     path: "/reminders",
     name: "reminders",
     component: RemindersView,
-    meta: {
-      icon: "calendar",
-    },
+    meta: { icon: "calendar" },
   },
   {
     path: "/resolutions",
     name: "resolutions",
-    component: HomeView,
-    meta: {
-      icon: "list",
-    },
+    component: ResolutionsView,
+    meta: { icon: "list" },
   },
   {
     path: "/notes",
     name: "notes",
-    component: HomeView,
-    meta: {
-      icon: "booklet",
-    },
+    component: NotesView,
+    meta: { icon: "booklet" },
   },
   {
     path: "/groceries",
     name: "groceries",
-    component: HomeView,
-    meta: {
-      icon: "store",
-    },
+    component: GroceriesView,
+    meta: { icon: "store" },
   },
 ];
 
