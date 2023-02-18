@@ -2,8 +2,8 @@
   <div
     :class="[
       'w-36 h-36 p-3',
-      'flex flex-col justify-between relative',
       'shadow-md bg-white text-gray-700 rounded-lg',
+      'flex flex-col justify-between relative overflow-hidden',
     ]"
   >
     <remix-icon :size="72" :icon="icon" class="text-primary-500" />

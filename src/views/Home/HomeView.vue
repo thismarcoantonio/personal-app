@@ -1,8 +1,13 @@
 <template>
   <header-container no-gutters>
     <div class="px-6">
-      <p class="text-xl font-bold">Hello {{ user }},</p>
-      <p class="text-sm text-gray-300">This is your progress so far</p>
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-xl font-bold">Hello {{ user }},</p>
+          <p class="text-sm text-gray-300">This is your progress so far</p>
+        </div>
+        <menu-dropdown v-model="cadency" :options="cadencyOptions" />
+      </div>
       <notification-tabs
         class="mt-6"
         v-model="tab"
@@ -34,10 +39,20 @@ import { ref } from "vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import NotificationTabs from "@/components/NotificationTabs.vue";
 import StatisticCard from "@/components/StatisticCard.vue";
+import MenuDropdown, { type MenuOption } from "@/components/MenuDropdown.vue";
 
 const tab = ref(0);
+const cadency = ref("month");
 
 const user = "User";
+
+const cadencyOptions: MenuOption[] = [
+  { value: "week" },
+  { value: "month" },
+  { value: "quarter" },
+  { value: "year" },
+];
+
 const statistics: Array<InstanceType<typeof StatisticCard>["$props"]> = [
   { title: "14 Reminders completed", icon: "calendar" },
   { title: "Mobile App resolution", icon: "list" },

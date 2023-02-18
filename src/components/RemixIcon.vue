@@ -12,7 +12,13 @@
 <script lang="ts" setup>
 import { ref, onBeforeMount } from "vue";
 
-export type IconTypes = "booklet" | "calendar" | "home" | "list" | "store";
+export type IconTypes =
+  | "booklet"
+  | "calendar"
+  | "home"
+  | "list"
+  | "store"
+  | "arrow-down-s";
 
 const props = defineProps<{
   size?: number;
