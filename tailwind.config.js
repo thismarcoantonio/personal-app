@@ -14,6 +14,9 @@ module.exports = {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
+      borderRadius: {
+        50: "50%",
+      },
     },
   },
 };

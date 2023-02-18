@@ -1,0 +1,24 @@
+<template>
+  <button
+    @click="handleCreate"
+    class="w-9 h-9 bg-white flex items-center justify-center rounded-50 shadow-md"
+  >
+    <remix-icon :size="20" class="text-primary-500" :icon="icon" />
+  </button>
+</template>
+
+<script lang="ts" setup>
+import RemixIcon, { type IconTypes } from "@/components/RemixIcon.vue";
+
+defineProps<{
+  icon: IconTypes;
+}>();
+
+const emit = defineEmits<{
+  (event: "create"): void;
+}>();
+
+function handleCreate() {
+  emit("create");
+}
+</script>
