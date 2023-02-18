@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 import type { IconTypes } from "@/components/RemixIcon.vue";
 import HomeView from "@/views/Home/HomeView.vue";
+import RemindersView from "@/views/Reminders/RemindersView.vue";
 
 interface RouteMeta {
   meta: {
@@ -24,7 +25,7 @@ export const mainRoutes: (RouteRecordRaw & RouteMeta)[] = [
   {
     path: "/reminders",
     name: "reminders",
-    component: HomeView,
+    component: RemindersView,
     meta: {
       icon: "calendar",
     },
