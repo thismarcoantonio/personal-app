@@ -1,6 +1,8 @@
 <template>
-  <router-view />
-  <navigation-bar />
+  <div class="w-full overflow-hidden">
+    <router-view />
+    <navigation-bar />
+  </div>
 </template>
 
 <script lang="ts" setup>

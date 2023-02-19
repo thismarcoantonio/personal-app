@@ -13,12 +13,15 @@
 import { ref, onBeforeMount } from "vue";
 
 export type IconTypes =
+  | "add"
+  | "arrow-down-s"
+  | "arrow-left"
   | "booklet"
   | "calendar"
+  | "close"
   | "home"
   | "list"
-  | "store"
-  | "arrow-down-s";
+  | "store";
 
 const props = defineProps<{
   size?: number;
