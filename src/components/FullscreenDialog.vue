@@ -13,13 +13,12 @@
     >
       <page-header :title="title">
         <template #prefix>
-          <icon-button
-            @click="handleClose"
-            icon="arrow-left"
-            class="-ml-2 mr-4"
-          />
+          <icon-button @click="handleClose" icon="arrow-left" class="mr-4" />
         </template>
       </page-header>
+      <div class="py-8 px-4">
+        <slot />
+      </div>
     </div>
   </transition>
 </template>

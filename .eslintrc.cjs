@@ -13,10 +13,23 @@ module.exports = {
     ecmaVersion: "latest",
   },
   rules: {
+    "prettier/prettier": "error",
     "vue/component-name-in-template-casing": [
       "error",
       "kebab-case",
       { registeredComponentsOnly: true },
+    ],
+    "vue/html-self-closing": [
+      "error",
+      {
+        html: {
+          void: "always",
+          normal: "always",
+          component: "always",
+        },
+        svg: "always",
+        math: "always",
+      },
     ],
   },
 };
