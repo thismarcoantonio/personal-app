@@ -8,7 +8,6 @@
         'font-medium': isActive(index),
         'opacity-70': !isActive(index),
       }"
-      class="cursor-pointer"
     >
       {{ tab.label }}
       <div

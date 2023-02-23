@@ -55,6 +55,11 @@ import NavigationBar from "@/components/NavigationBar.vue";
   font-display: swap;
 }
 
+a,
+button {
+  cursor: default;
+}
+
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
