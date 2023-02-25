@@ -8,7 +8,15 @@
       <icon-button @click="isFullscreenOpen = true" icon="add" rounded />
     </template>
   </page-header>
-  {{ reminders }}
+  <ul class="p-4">
+    <info-card
+      is="li"
+      v-for="reminder in reminders"
+      :key="reminder.id"
+      :title="reminder.title"
+      :description="reminder.date"
+    />
+  </ul>
   <fullscreen-dialog title="New reminder" v-model:open="isFullscreenOpen">
     <form-wrapper @submit="handleSubmit">
       <text-field name="title" label="Title" />
@@ -22,13 +30,14 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
+import { getReminders, createReminder, type Reminder } from "@/database";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import FullscreenDialog from "@/components/FullscreenDialog.vue";
 import FormWrapper from "@/components/Form/FormWrapper.vue";
 import TextField from "@/components/Form/TextField.vue";
 import MainButton from "@/components/MainButton.vue";
-import { getReminders, createReminder, type Reminder } from "@/database";
+import InfoCard from "@/components/InfoCard.vue";
 
 const isFullscreenOpen = ref(false);
 const reminders = ref<Reminder[]>();
