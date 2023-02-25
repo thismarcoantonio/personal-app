@@ -8,7 +8,7 @@
 import { provide, reactive } from "vue";
 
 export interface FormProvider {
-  state: { [key: string]: string };
+  state: any;
   update: (name: string, value: string) => void;
 }
 
@@ -29,6 +29,6 @@ function updateFormState(name: string, value: string) {
 
 function handleSubmit(event: Event) {
   event.preventDefault();
-  emit("submit", formState);
+  emit("submit", { ...formState });
 }
 </script>

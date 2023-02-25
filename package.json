@@ -11,13 +11,15 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "android:build": "vite build && cap sync",
-    "android:run": "cap run android"
+    "android:run": "cap run android",
+    "android:restart": "npm run android:build && npm run android:run"
   },
   "dependencies": {
     "@capacitor/android": "^4.6.3",
     "@capacitor/cli": "^4.6.3",
     "@capacitor/core": "^4.6.3",
     "@headlessui/vue": "^1.7.10",
+    "dexie": "^3.2.3",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
