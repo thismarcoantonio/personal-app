@@ -18,12 +18,14 @@
     />
   </ul>
   <fullscreen-dialog title="New reminder" v-model:open="isFullscreenOpen">
-    <form-wrapper @submit="handleSubmit">
+    <form-wrapper @submit="handleSubmit" v-slot="form">
       <text-field name="title" label="Title" required />
       <text-field name="location" label="Location" />
       <text-field name="date" label="Date" />
       <text-field name="description" label="Description" multiline />
-      <main-button class="ml-auto">Create reminder</main-button>
+      <main-button class="ml-auto" :disabled="!form.valid">
+        Create reminder
+      </main-button>
     </form-wrapper>
   </fullscreen-dialog>
 </template>

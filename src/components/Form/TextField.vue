@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 import type { FormProvider } from "@/components/Form/FormWrapper.vue";
 
 const props = defineProps<{
@@ -32,6 +32,13 @@ const props = defineProps<{
 }>();
 
 const form = inject<FormProvider>("form-wrapper")!;
+
+onMounted(() => {
+  form.init(props.name, {
+    value: "",
+    required: props.required,
+  });
+});
 
 function handleUpdate(event: Event) {
   const target = event.target as HTMLInputElement;
