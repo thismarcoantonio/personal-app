@@ -19,7 +19,7 @@
   </ul>
   <fullscreen-dialog title="New reminder" v-model:open="isFullscreenOpen">
     <form-wrapper @submit="handleSubmit">
-      <text-field name="title" label="Title" />
+      <text-field name="title" label="Title" required />
       <text-field name="location" label="Location" />
       <text-field name="date" label="Date" />
       <text-field name="description" label="Description" multiline />
