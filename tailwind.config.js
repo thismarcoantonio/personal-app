@@ -17,6 +17,9 @@ module.exports = {
       borderRadius: {
         50: "50%",
       },
+      transitionProperty: {
+        height: "height",
+      },
     },
   },
 };
