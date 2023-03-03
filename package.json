@@ -12,10 +12,12 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "android:build": "vite build && cap sync",
     "android:run": "cap run android",
-    "android:restart": "npm run android:build && npm run android:run"
+    "android:restart": "npm run android:build && npm run android:run",
+    "android:generate": "capacitor-assets generate --android --iconBackgroundColor '#eeeeee' --splashBackgroundColor '#4C11CA'"
   },
   "dependencies": {
     "@capacitor/android": "^4.6.3",
+    "@capacitor/assets": "^2.0.4",
     "@capacitor/cli": "^4.6.3",
     "@capacitor/core": "^4.6.3",
     "@headlessui/vue": "^1.7.10",
