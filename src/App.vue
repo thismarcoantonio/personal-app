@@ -58,6 +58,7 @@ import NavigationBar from "@/components/NavigationBar.vue";
 a,
 button {
   cursor: default;
+  user-select: none;
 }
 
 .scrollbar-hidden::-webkit-scrollbar {

@@ -8,7 +8,7 @@
       <icon-button @click="isFullscreenOpen = true" icon="add" rounded />
     </template>
   </page-header>
-  <ul class="p-4">
+  <ul class="p-4 pb-20">
     <info-card
       is="li"
       v-for="reminder in reminders"
