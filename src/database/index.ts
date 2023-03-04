@@ -7,8 +7,8 @@ export enum Databases {
 
 export interface Reminder {
   id: number;
+  date: number;
   title: string;
-  date?: string;
   location?: string;
   description?: string;
 }

@@ -8,14 +8,14 @@
 import { provide, reactive, computed, toRaw, type ComputedRef } from "vue";
 
 export interface Field {
-  value?: string;
+  value?: string | number;
   required?: boolean;
   touched?: boolean;
 }
 
 export type FormProvider = {
   init: (name: string, field: Field) => void;
-  update: (name: string, value: string) => void;
+  update: (name: string, value?: Field["value"]) => void;
   updateTouched: (name: string, value: boolean) => void;
   form: {
     errors: ComputedRef<{ [key: string]: string | null }>;
@@ -53,7 +53,7 @@ const errors = computed(() => {
     }, {});
 });
 
-function updateFormState(name: string, value: string) {
+function updateFormState(name: string, value: Field["value"]) {
   formState[name].value = value;
 }
 

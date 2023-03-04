@@ -5,27 +5,47 @@
     :required="required"
     :error="field.touched && error ? error : ''"
   >
-    <component
-      :is="multiline ? 'textarea' : 'input'"
+    <input
       @input="handleUpdate"
       @blur="handleBlur"
+      type="date"
+      ref="datePicker"
+      class="invisible absolute pointer-events-none"
+    />
+    <input
       type="text"
-      class="w-full px-4 py-3 outline-0 bg-transparent text-gray-800 resize-none"
+      readonly
+      class="w-full px-4 py-3 outline-0 bg-transparent text-gray-800"
+      @click="openDatePicker"
+      @focus="openDatePicker"
+      @blur="handleBlur"
+      :value="formatDate(field.value)"
+    />
+    <icon-button
+      v-if="field.value"
+      @click="state.update(name)"
+      class="absolute right-3 top-3 text-gray-500"
+      icon="close"
+      flat
     />
   </base-field>
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, computed } from "vue";
+import { inject, onMounted, computed, ref } from "vue";
+import dayjs from "dayjs";
+import { formatDate } from "@/utils/date";
 import type { FormProvider } from "@/components/Form/FormWrapper.vue";
 import BaseField from "@/components/Form/BaseField.vue";
+import IconButton from "@/components/IconButton.vue";
 
 const props = defineProps<{
   label: string;
   name: string;
-  multiline?: boolean;
   required?: boolean;
 }>();
+
+const datePicker = ref<HTMLInputElement | null>(null);
 
 const state = inject<FormProvider>("form-wrapper")!;
 
@@ -35,11 +55,16 @@ const error = computed(() => state.form.errors.value[props.name] ?? null);
 
 function handleUpdate(event: Event) {
   const target = event.target as HTMLInputElement;
-  state.update(props.name, target.value);
+  const formattedValue = dayjs(target.value).valueOf();
+  state.update(props.name, formattedValue);
 }
 
 function handleBlur() {
   state.updateTouched(props.name, true);
+}
+
+function openDatePicker() {
+  datePicker.value?.showPicker();
 }
 
 onMounted(() => {

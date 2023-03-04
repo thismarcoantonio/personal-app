@@ -1,10 +1,14 @@
 <template>
   <button
     @click="handleCreate"
-    class="w-9 h-9 bg-white flex items-center justify-center shadow-md"
-    :class="{ 'rounded-50': rounded, 'rounded-md': !rounded }"
+    :class="{
+      'rounded-50': rounded,
+      'rounded-md': !rounded,
+      'w-9 h-9 bg-white flex items-center justify-center shadow-md text-primary-500':
+        !flat,
+    }"
   >
-    <remix-icon :size="20" class="text-primary-500" :icon="icon" />
+    <remix-icon :size="20" :icon="icon" />
   </button>
 </template>
 
@@ -14,6 +18,7 @@ import RemixIcon, { type IconTypes } from "@/components/RemixIcon.vue";
 defineProps<{
   icon: IconTypes;
   rounded?: boolean;
+  flat?: boolean;
 }>();
 
 const emit = defineEmits<{
