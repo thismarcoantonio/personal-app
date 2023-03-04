@@ -20,7 +20,13 @@
   <fullscreen-dialog title="New reminder" v-model:open="isFullscreenOpen">
     <form-wrapper @submit="handleSubmit" v-slot="form">
       <text-field name="title" label="Title" required />
-      <date-field name="date" label="Date" required />
+      <date-field
+        :datetime="!form.fields.allDay?.value"
+        label="Date"
+        name="date"
+        required
+      />
+      <checkbox-field name="allDay" label="All Day" />
       <text-field name="location" label="Location" />
       <text-field name="description" label="Description" multiline />
       <main-button class="ml-auto" :disabled="!form.valid">
@@ -38,6 +44,7 @@ import IconButton from "@/components/IconButton.vue";
 import FullscreenDialog from "@/components/FullscreenDialog.vue";
 import FormWrapper from "@/components/Form/FormWrapper.vue";
 import TextField from "@/components/Form/TextField.vue";
+import CheckboxField from "@/components/Form/CheckboxField.vue";
 import DateField from "@/components/Form/DateField.vue";
 import MainButton from "@/components/MainButton.vue";
 import InfoCard from "@/components/InfoCard.vue";

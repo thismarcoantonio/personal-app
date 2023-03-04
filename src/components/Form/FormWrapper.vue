@@ -1,25 +1,25 @@
 <template>
   <form @submit="handleSubmit" class="flex flex-col">
-    <slot :valid="valid" />
+    <slot :valid="valid" :fields="formState" />
   </form>
 </template>
 
 <script lang="ts" setup>
 import { provide, reactive, computed, toRaw, type ComputedRef } from "vue";
 
-export interface Field {
-  value?: string | number;
+export interface Field<Value = string | number | boolean | undefined> {
+  value?: Value;
   required?: boolean;
   touched?: boolean;
 }
 
-export type FormProvider = {
-  init: (name: string, field: Field) => void;
-  update: (name: string, value?: Field["value"]) => void;
+export type FormProvider<FieldValue = Field["value"]> = {
+  init: (name: string, field: Field<FieldValue>) => void;
+  update: (name: string, value?: FieldValue) => void;
   updateTouched: (name: string, value: boolean) => void;
   form: {
     errors: ComputedRef<{ [key: string]: string | null }>;
-    values: { [key: string]: Field };
+    fields: { [key: string]: Field<FieldValue> };
     valid: boolean;
   };
 };
@@ -81,7 +81,7 @@ provide<FormProvider>("form-wrapper", {
   update: updateFormState,
   updateTouched: updateFieldTouched,
   form: {
-    values: formState,
+    fields: formState,
     valid: valid.value,
     errors,
   },

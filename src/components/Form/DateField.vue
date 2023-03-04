@@ -8,7 +8,7 @@
     <input
       @input="handleUpdate"
       @blur="handleBlur"
-      type="date"
+      :type="datetime ? 'datetime-local' : 'date'"
       ref="datePicker"
       class="invisible absolute pointer-events-none"
     />
@@ -19,7 +19,7 @@
       @click="openDatePicker"
       @focus="openDatePicker"
       @blur="handleBlur"
-      :value="formatDate(field.value)"
+      :value="datetime ? formatDateTime(field.value) : formatDate(field.value)"
     />
     <icon-button
       v-if="field.value"
@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import { inject, onMounted, computed, ref } from "vue";
 import dayjs from "dayjs";
-import { formatDate } from "@/utils/date";
+import { formatDate, formatDateTime } from "@/utils/date";
 import type { FormProvider } from "@/components/Form/FormWrapper.vue";
 import BaseField from "@/components/Form/BaseField.vue";
 import IconButton from "@/components/IconButton.vue";
@@ -43,13 +43,14 @@ const props = defineProps<{
   label: string;
   name: string;
   required?: boolean;
+  datetime?: boolean;
 }>();
 
 const datePicker = ref<HTMLInputElement | null>(null);
 
-const state = inject<FormProvider>("form-wrapper")!;
+const state = inject<FormProvider<number>>("form-wrapper")!;
 
-const field = computed(() => state.form.values[props.name] ?? {});
+const field = computed(() => state.form.fields[props.name] ?? {});
 
 const error = computed(() => state.form.errors.value[props.name] ?? null);
 
@@ -69,7 +70,7 @@ function openDatePicker() {
 
 onMounted(() => {
   state.init(props.name, {
-    value: "",
+    value: undefined,
     required: props.required,
   });
 });

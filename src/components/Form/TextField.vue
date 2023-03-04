@@ -27,9 +27,9 @@ const props = defineProps<{
   required?: boolean;
 }>();
 
-const state = inject<FormProvider>("form-wrapper")!;
+const state = inject<FormProvider<string>>("form-wrapper")!;
 
-const field = computed(() => state.form.values[props.name] ?? {});
+const field = computed(() => state.form.fields[props.name] ?? {});
 
 const error = computed(() => state.form.errors.value[props.name] ?? null);
 
