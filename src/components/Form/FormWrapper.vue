@@ -46,7 +46,6 @@ const errors = computed(() => {
     .filter(([, field]) => field.required)
     .reduce<{ [key: string]: string | null }>((errors, [fieldName, field]) => {
       const hasError = field.required && !field.value;
-      console.log(errors);
       return {
         ...errors,
         [fieldName]: hasError ? "Required field" : null,
