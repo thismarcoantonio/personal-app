@@ -3,7 +3,7 @@
     :label="label"
     :value="field.value"
     :required="required"
-    :error="error"
+    :error="field.touched && error ? error : ''"
   >
     <select
       name="name"
