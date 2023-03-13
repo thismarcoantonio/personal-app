@@ -2,6 +2,7 @@
   <div
     class="relative bg-white border rounded shadow-sm text-sm text-gray-600 focus-within:text-primary-500 focus-within:border-primary-500"
     :class="{ 'border-rose-500': error }"
+    v-bind="$attrs"
   >
     <div
       v-if="label"
@@ -15,7 +16,7 @@
     </div>
     <slot />
   </div>
-  <div :class="[error ? 'h-10' : 'h-6']" class="transition-height">
+  <div :class="[error ? 'h-10' : 'h-4']" class="transition-height">
     <span v-show="error" class="text-xs text-rose-500">
       {{ error }}
     </span>

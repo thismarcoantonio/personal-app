@@ -27,6 +27,12 @@
         required
       />
       <checkbox-field name="allDay" label="All Day" />
+      <select-field
+        required
+        name="frequency"
+        label="Frequency"
+        :options="frequencyOptions"
+      />
       <text-field name="location" label="Location" />
       <text-field name="description" label="Description" multiline />
       <main-button class="ml-auto" :disabled="!form.valid">
@@ -46,11 +52,20 @@ import FormWrapper from "@/components/Form/FormWrapper.vue";
 import TextField from "@/components/Form/TextField.vue";
 import CheckboxField from "@/components/Form/CheckboxField.vue";
 import DateField from "@/components/Form/DateField.vue";
+import SelectField from "@/components/Form/SelectField.vue";
 import MainButton from "@/components/MainButton.vue";
 import InfoCard from "@/components/InfoCard.vue";
 
 const isFullscreenOpen = ref(false);
 const reminders = ref<Reminder[]>();
+
+const frequencyOptions = [
+  { value: "once", label: "Once" },
+  { value: "daily", label: "Daily" },
+  { value: "weekly", label: "Weekly" },
+  { value: "monthly", label: "Monthly" },
+  { value: "yearly", label: "Yearly" },
+];
 
 onMounted(async () => {
   reminders.value = await getReminders();

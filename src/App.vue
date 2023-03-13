@@ -61,6 +61,12 @@ button {
   user-select: none;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
