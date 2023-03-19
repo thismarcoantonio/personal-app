@@ -22,22 +22,11 @@
           }}
         </div>
         <ul class="mb-8">
-          <info-card
-            is="li"
+          <reminders-card
             v-for="reminder in day.reminders"
             :key="reminder.id"
-            :title="reminder.title"
-          >
-            <p v-if="reminder.description" class="mb-2 text-gray-600">
-              {{ reminder.description }}
-            </p>
-            {{
-              reminder.allDay
-                ? `${formatDate(reminder.date)} All Day`
-                : formatDateTime(reminder.date)
-            }}
-            <span v-if="reminder.location">• {{ reminder.location }}</span>
-          </info-card>
+            :reminder="reminder"
+          />
         </ul>
       </template>
     </div>
@@ -54,12 +43,12 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dayjs from "dayjs";
 import { getReminders, type Reminder } from "@/database";
-import { formatDate, formatDateTime } from "@/utils/date";
+import { formatDate } from "@/utils/date";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import EmptyContent from "@/components/EmptyContent.vue";
 import MainButton from "@/components/MainButton.vue";
-import InfoCard from "@/components/InfoCard.vue";
+import RemindersCard from "./RemindersCard.vue";
 import RemindersSave from "./RemindersSave.vue";
 
 const route = useRoute();

@@ -1,6 +1,7 @@
 <template>
   <button
     @click="handleCreate"
+    class="d-block"
     :class="{
       'rounded-50': rounded,
       'rounded-md': !rounded,

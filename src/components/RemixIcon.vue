@@ -19,8 +19,11 @@ export type IconTypes =
   | "booklet"
   | "calendar"
   | "close"
+  | "delete-bin"
   | "home"
   | "list"
+  | "more-vertical"
+  | "pencil"
   | "store";
 
 const props = defineProps<{
