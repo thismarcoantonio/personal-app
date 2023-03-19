@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import dayjs from "dayjs";
 import { addNotification } from "@/utils/notifications";
 
 export enum Databases {
@@ -37,11 +38,23 @@ export class Database extends Dexie {
 export const db = new Database();
 
 export function getReminders() {
-  return db.table(Databases.reminders).toArray();
+  const todayTimestamp = dayjs().startOf("day").valueOf();
+  return db
+    .table(Databases.reminders)
+    .where("date")
+    .aboveOrEqual(todayTimestamp)
+    .toArray();
 }
 
-export async function createReminder(values: Omit<Reminder, "id">) {
-  const reminderId = await db.table(Databases.reminders).put(values);
+export async function createReminder({
+  date,
+  allDay,
+  ...values
+}: Omit<Reminder, "id">) {
+  const reminderId = await db.table(Databases.reminders).put({
+    ...values,
+    date: allDay ? dayjs(date).startOf("day").valueOf() : date,
+  });
   const reminder: Reminder = await db
     .table(Databases.reminders)
     .get(reminderId);

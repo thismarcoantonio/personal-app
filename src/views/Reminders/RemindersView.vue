@@ -12,84 +12,87 @@
     >
       <main-button @click="openCreatePage">Add reminder</main-button>
     </empty-content>
-    <ul v-else>
-      <info-card
-        is="li"
-        v-for="reminder in reminders"
-        :key="reminder.id"
-        :title="reminder.title"
-      >
-        <p v-if="reminder.description" class="mb-2 text-gray-600">
-          {{ reminder.description }}
-        </p>
-        {{
-          reminder.allDay
-            ? `${formatDate(reminder.date)} All Day`
-            : formatDateTime(reminder.date)
-        }}
-        <span v-if="reminder.location">• {{ reminder.location }}</span>
-      </info-card>
-    </ul>
+    <div v-else>
+      <template v-for="day in remindersByDay" :key="day.date">
+        <div class="text-lg mb-2 text-gray-600 font-medium">
+          {{
+            dayjs().isSame(day.date, "day")
+              ? "Today"
+              : formatDate(day.date, { humanize: true })
+          }}
+        </div>
+        <ul class="mb-8">
+          <info-card
+            is="li"
+            v-for="reminder in day.reminders"
+            :key="reminder.id"
+            :title="reminder.title"
+          >
+            <p v-if="reminder.description" class="mb-2 text-gray-600">
+              {{ reminder.description }}
+            </p>
+            {{
+              reminder.allDay
+                ? `${formatDate(reminder.date)} All Day`
+                : formatDateTime(reminder.date)
+            }}
+            <span v-if="reminder.location">• {{ reminder.location }}</span>
+          </info-card>
+        </ul>
+      </template>
+    </div>
   </div>
-  <fullscreen-dialog
-    title="New reminder"
+  <reminders-save
     :open="isCreatePage"
     @close="closeCreatePage"
-  >
-    <form-wrapper @submit="handleSubmit" v-slot="form">
-      <text-field name="title" label="Title" required />
-      <date-field
-        :datetime="!form.fields.allDay?.value"
-        label="Date"
-        name="date"
-        required
-      />
-      <checkbox-field name="allDay" label="All Day" />
-      <select-field
-        required
-        name="frequency"
-        label="Frequency"
-        :options="frequencyOptions"
-      />
-      <text-field name="location" label="Location" />
-      <text-field name="description" label="Description" multiline />
-      <main-button class="ml-auto" :disabled="!form.valid">
-        Create reminder
-      </main-button>
-    </form-wrapper>
-  </fullscreen-dialog>
+    @submitted="onSubmitted"
+  />
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  getReminders,
-  createReminder,
-  Frequency,
-  type Reminder,
-} from "@/database";
+import dayjs from "dayjs";
+import { getReminders, type Reminder } from "@/database";
 import { formatDate, formatDateTime } from "@/utils/date";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import EmptyContent from "@/components/EmptyContent.vue";
-import FullscreenDialog from "@/components/FullscreenDialog.vue";
-import FormWrapper from "@/components/Form/FormWrapper.vue";
-import TextField from "@/components/Form/TextField.vue";
-import CheckboxField from "@/components/Form/CheckboxField.vue";
-import DateField from "@/components/Form/DateField.vue";
-import SelectField from "@/components/Form/SelectField.vue";
 import MainButton from "@/components/MainButton.vue";
 import InfoCard from "@/components/InfoCard.vue";
+import RemindersSave from "./RemindersSave.vue";
 
 const route = useRoute();
 const router = useRouter();
 const reminders = ref<Reminder[]>([]);
 
-const frequencyOptions = Object.entries(Frequency).map(([value, label]) => ({
-  value,
-  label,
-}));
+const remindersByDay = computed(() => {
+  return reminders.value
+    .reduce<{ date: number; reminders: Reminder[] }[]>((days, reminder) => {
+      const latestDay = days.slice(-1)[0];
+      const belongsToPreviousDay =
+        latestDay && dayjs(reminder.date).isSame(latestDay?.date, "day");
+
+      return belongsToPreviousDay
+        ? [
+            ...days.slice(0, -1),
+            { ...latestDay, reminders: [...latestDay.reminders, reminder] },
+          ]
+        : [
+            ...days,
+            {
+              date: dayjs(reminder.date).startOf("day").valueOf(),
+              reminders: [reminder],
+            },
+          ];
+    }, [])
+    .map(({ reminders, ...day }) => ({
+      ...day,
+      reminders: reminders
+        .concat()
+        .sort((a, b) => (a.allDay > b.allDay ? -1 : 1)),
+    }));
+});
 
 const isCreatePage = computed(() => {
   return route.params.action === "create";
@@ -103,8 +106,7 @@ function closeCreatePage() {
   return router.push("/reminders");
 }
 
-async function handleSubmit(values: Omit<Reminder, "id">) {
-  await createReminder(values);
+async function onSubmitted() {
   reminders.value = await getReminders();
   closeCreatePage();
 }
