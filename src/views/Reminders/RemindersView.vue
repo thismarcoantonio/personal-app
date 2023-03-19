@@ -1,7 +1,7 @@
 <template>
   <page-header title="Reminders" description="Calendar view">
     <template #suffix>
-      <icon-button @click="isFullscreenOpen = true" icon="add" rounded />
+      <icon-button @click="openCreatePage" icon="add" rounded />
     </template>
   </page-header>
   <div class="p-4 pb-20">
@@ -10,7 +10,7 @@
       title="No reminders found"
       description="Create import reminders of your daily life, so you can be notified about it"
     >
-      <main-button @click="isFullscreenOpen = true">Add reminder</main-button>
+      <main-button @click="openCreatePage">Add reminder</main-button>
     </empty-content>
     <ul v-else>
       <info-card
@@ -22,7 +22,11 @@
       />
     </ul>
   </div>
-  <fullscreen-dialog title="New reminder" v-model:open="isFullscreenOpen">
+  <fullscreen-dialog
+    title="New reminder"
+    :open="isCreatePage"
+    @close="closeCreatePage"
+  >
     <form-wrapper @submit="handleSubmit" v-slot="form">
       <text-field name="title" label="Title" required />
       <date-field
@@ -48,7 +52,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { getReminders, createReminder, type Reminder } from "@/database";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
@@ -62,7 +67,8 @@ import SelectField from "@/components/Form/SelectField.vue";
 import MainButton from "@/components/MainButton.vue";
 import InfoCard from "@/components/InfoCard.vue";
 
-const isFullscreenOpen = ref(false);
+const route = useRoute();
+const router = useRouter();
 const reminders = ref<Reminder[]>([]);
 
 const frequencyOptions = [
@@ -73,13 +79,25 @@ const frequencyOptions = [
   { value: "yearly", label: "Yearly" },
 ];
 
-onMounted(async () => {
-  reminders.value = await getReminders();
+const isCreatePage = computed(() => {
+  return route.params.action === "create";
 });
+
+function openCreatePage() {
+  return router.push("/reminders/create");
+}
+
+function closeCreatePage() {
+  return router.push("/reminders");
+}
 
 async function handleSubmit(values: Omit<Reminder, "id">) {
   await createReminder(values);
   reminders.value = await getReminders();
-  isFullscreenOpen.value = false;
+  closeCreatePage();
 }
+
+onMounted(async () => {
+  reminders.value = await getReminders();
+});
 </script>

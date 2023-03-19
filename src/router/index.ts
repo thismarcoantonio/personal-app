@@ -24,7 +24,7 @@ export const mainRoutes: (RouteRecordRaw & RouteMeta)[] = [
     meta: { icon: "home" },
   },
   {
-    path: "/reminders",
+    path: "/reminders/:action?",
     name: "reminders",
     component: RemindersView,
     meta: { icon: "calendar" },

@@ -34,6 +34,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (event: "update:open", state: boolean): void;
+  (event: "close"): void;
 }>();
 
 const transitionClasses = {
@@ -44,5 +45,6 @@ const transitionClasses = {
 
 function handleClose() {
   emit("update:open", false);
+  emit("close");
 }
 </script>
