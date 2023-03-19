@@ -5,10 +5,20 @@ export enum Databases {
   reminders = "reminders",
 }
 
+export enum Frequency {
+  ONCE = "Once",
+  DAILY = "Daily",
+  WEEKLY = "Weekly",
+  MONTHLY = "Monthly",
+  YEARLY = "Yearly",
+}
+
 export interface Reminder {
   id: number;
   date: number;
   title: string;
+  allDay: boolean;
+  frequency: keyof typeof Frequency;
   location?: string;
   description?: string;
 }

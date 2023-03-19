@@ -18,8 +18,17 @@
         v-for="reminder in reminders"
         :key="reminder.id"
         :title="reminder.title"
-        :description="`${reminder.date}`"
-      />
+      >
+        <p v-if="reminder.description" class="mb-2 text-gray-600">
+          {{ reminder.description }}
+        </p>
+        {{
+          reminder.allDay
+            ? `${formatDate(reminder.date)} All Day`
+            : formatDateTime(reminder.date)
+        }}
+        <span v-if="reminder.location">• {{ reminder.location }}</span>
+      </info-card>
     </ul>
   </div>
   <fullscreen-dialog
@@ -54,7 +63,13 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getReminders, createReminder, type Reminder } from "@/database";
+import {
+  getReminders,
+  createReminder,
+  Frequency,
+  type Reminder,
+} from "@/database";
+import { formatDate, formatDateTime } from "@/utils/date";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import EmptyContent from "@/components/EmptyContent.vue";
@@ -71,13 +86,10 @@ const route = useRoute();
 const router = useRouter();
 const reminders = ref<Reminder[]>([]);
 
-const frequencyOptions = [
-  { value: "once", label: "Once" },
-  { value: "daily", label: "Daily" },
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
-  { value: "yearly", label: "Yearly" },
-];
+const frequencyOptions = Object.entries(Frequency).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 const isCreatePage = computed(() => {
   return route.params.action === "create";

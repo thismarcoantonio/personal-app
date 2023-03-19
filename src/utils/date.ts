@@ -5,9 +5,9 @@ interface Options {
 }
 
 const DATE_FORMAT = "MM/DD/YYYY";
-const DATE_TIME_FORMAT = `${DATE_FORMAT} [•] hh:mm A`;
+const DATE_TIME_FORMAT = `${DATE_FORMAT} hh:mmA`;
 const DATE_FORMAT_HUMANIZED = "dddd, MMMM DD";
-const DATE_TIME_FORMAT_HUMANIZED = `${DATE_FORMAT_HUMANIZED} [•] hh:mm A`;
+const DATE_TIME_FORMAT_HUMANIZED = `${DATE_FORMAT_HUMANIZED} hh:mmA`;
 
 export function formatDate(
   value?: string | number | null,
