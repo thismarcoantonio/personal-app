@@ -5,9 +5,9 @@
     <ul class="flex items-center justify-between h-full">
       <li :key="route.name" v-for="route in mainRoutes">
         <router-link
-          :to="route.path"
           class="text-gray-400"
-          exact-active-class="text-primary-500"
+          active-class="text-primary-500"
+          :to="{ name: route.name }"
         >
           <remix-icon :icon="route.meta.icon" />
         </router-link>
