@@ -1,31 +1,56 @@
 <template>
-  <fullscreen-dialog title="New reminder" :open="open" @close="emit('close')">
+  <fullscreen-dialog
+    :open="open"
+    :title="isEdit ? 'Update reminder' : 'New reminder'"
+    @close="emit('close')"
+  >
     <form-wrapper @submit="handleSubmit" v-slot="form">
-      <text-field name="title" label="Title" required />
-      <date-field
-        :datetime="!form.fields.allDay?.value"
-        label="Date"
-        name="date"
+      <text-field
         required
+        name="title"
+        label="Title"
+        :initial-value="reminder?.title"
       />
-      <checkbox-field name="allDay" label="All Day" />
+      <date-field
+        required
+        name="date"
+        label="Date"
+        :initial-value="reminder?.date"
+        :datetime="!form.fields.allDay?.value"
+      />
+      <checkbox-field
+        name="allDay"
+        label="All Day"
+        :initial-value="reminder?.allDay"
+      />
       <select-field
         required
         name="frequency"
         label="Frequency"
         :options="frequencyOptions"
+        :initial-value="reminder?.frequency"
       />
-      <text-field name="location" label="Location" />
-      <text-field name="description" label="Description" multiline />
+      <text-field
+        name="location"
+        label="Location"
+        :initial-value="reminder?.location"
+      />
+      <text-field
+        multiline
+        name="description"
+        label="Description"
+        :initial-value="reminder?.description"
+      />
       <main-button class="ml-auto" :disabled="!form.valid">
-        Create reminder
+        {{ isEdit ? "Update reminder" : "Create reminder" }}
       </main-button>
     </form-wrapper>
   </fullscreen-dialog>
 </template>
 
 <script lang="ts" setup>
-import { createReminder, Frequency, type Reminder } from "@/database";
+import { computed } from "vue";
+import { saveReminder, Frequency, type Reminder } from "@/database";
 import FullscreenDialog from "@/components/FullscreenDialog.vue";
 import FormWrapper from "@/components/Form/FormWrapper.vue";
 import TextField from "@/components/Form/TextField.vue";
@@ -34,7 +59,8 @@ import DateField from "@/components/Form/DateField.vue";
 import SelectField from "@/components/Form/SelectField.vue";
 import MainButton from "@/components/MainButton.vue";
 
-defineProps<{
+const props = defineProps<{
+  reminder?: Reminder;
   open: boolean;
 }>();
 
@@ -43,13 +69,21 @@ const emit = defineEmits<{
   (event: "submitted"): void;
 }>();
 
+const isEdit = computed(() => {
+  return !!props.reminder;
+});
+
 const frequencyOptions = Object.entries(Frequency).map(([value, label]) => ({
   value,
   label,
 }));
 
 async function handleSubmit(values: Omit<Reminder, "id">) {
-  await createReminder(values);
+  const reminder = props.reminder?.id
+    ? { ...values, id: props.reminder.id }
+    : values;
+
+  await saveReminder(reminder);
   emit("submitted");
 }
 </script>

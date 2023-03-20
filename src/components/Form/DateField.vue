@@ -9,6 +9,7 @@
       @input="handleUpdate"
       @blur="handleBlur"
       :type="datetime ? 'datetime-local' : 'date'"
+      :value="formattedValue"
       ref="datePicker"
       class="invisible absolute pointer-events-none"
     />
@@ -40,10 +41,11 @@ import BaseField from "@/components/Form/BaseField.vue";
 import IconButton from "@/components/IconButton.vue";
 
 const props = defineProps<{
-  label: string;
   name: string;
+  label: string;
   required?: boolean;
   datetime?: boolean;
+  initialValue?: number;
 }>();
 
 const datePicker = ref<HTMLInputElement | null>(null);
@@ -53,6 +55,12 @@ const state = inject<FormProvider<number>>("form-wrapper")!;
 const field = computed(() => state.form.fields[props.name] ?? {});
 
 const error = computed(() => state.form.errors.value[props.name] ?? null);
+
+const formattedValue = computed(() => {
+  return dayjs(field.value.value).format(
+    props.datetime ? "YYYY-MM-DDThh:mm" : "YYYY-MM-DD"
+  );
+});
 
 function handleUpdate(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -70,7 +78,7 @@ function openDatePicker() {
 
 onMounted(() => {
   state.init(props.name, {
-    value: undefined,
+    value: props.initialValue,
     required: props.required,
   });
 });

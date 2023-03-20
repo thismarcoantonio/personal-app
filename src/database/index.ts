@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import dayjs from "dayjs";
-import { addNotification } from "@/utils/notifications";
+// import { addNotification } from "@/utils/notifications";
 
 export enum Databases {
   reminders = "reminders",
@@ -46,22 +46,26 @@ export function getReminders() {
     .toArray();
 }
 
-export async function createReminder({
+export async function saveReminder({
   date,
   allDay,
   ...values
-}: Omit<Reminder, "id">) {
+}: Partial<Reminder>) {
   const reminderId = await db.table(Databases.reminders).put({
     ...values,
+    allDay,
     date: allDay ? dayjs(date).startOf("day").valueOf() : date,
   });
   const reminder: Reminder = await db
     .table(Databases.reminders)
     .get(reminderId);
-  addNotification({
-    id: reminder.id,
-    title: reminder.title,
-    description: "Reminder at 22:30h",
-  });
+
+  // Revisit notifications later
+  // addNotification({
+  //   id: reminder.id,
+  //   title: reminder.title,
+  //   description: "Reminder at 22:30h",
+  // });
+
   return reminder;
 }

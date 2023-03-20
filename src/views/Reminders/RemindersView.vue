@@ -32,7 +32,8 @@
     </div>
   </div>
   <reminders-save
-    :open="isCreatePage"
+    :open="isCreatePage || isEditPage"
+    :reminder="reminderToEdit"
     @close="closeCreatePage"
     @submitted="onSubmitted"
   />
@@ -85,6 +86,17 @@ const remindersByDay = computed(() => {
 
 const isCreatePage = computed(() => {
   return route.params.action === "create";
+});
+
+const isEditPage = computed(() => {
+  return !!route.params.action;
+});
+
+const reminderToEdit = computed(() => {
+  if (!route.params.action || route.params.action === "create") return;
+  return reminders.value.find(
+    (reminder) => reminder.id === Number(route.params.action)
+  );
 });
 
 function openCreatePage() {

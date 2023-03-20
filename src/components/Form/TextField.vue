@@ -11,6 +11,7 @@
       @blur="handleBlur"
       type="text"
       class="w-full px-4 py-3 outline-0 bg-transparent text-gray-800 resize-none"
+      :value="field.value"
     />
   </base-field>
 </template>
@@ -21,10 +22,11 @@ import type { FormProvider } from "@/components/Form/FormWrapper.vue";
 import BaseField from "@/components/Form/BaseField.vue";
 
 const props = defineProps<{
-  label: string;
   name: string;
-  multiline?: boolean;
+  label: string;
   required?: boolean;
+  multiline?: boolean;
+  initialValue?: string;
 }>();
 
 const state = inject<FormProvider<string>>("form-wrapper")!;
@@ -44,7 +46,7 @@ function handleBlur() {
 
 onMounted(() => {
   state.init(props.name, {
-    value: "",
+    value: props.initialValue,
     required: props.required,
   });
 });

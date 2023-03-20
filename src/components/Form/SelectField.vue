@@ -47,11 +47,12 @@ export interface Option {
 const props = defineProps<{
   name: string;
   label: string;
-  required?: boolean;
   options: Option[];
+  required?: boolean;
+  initialValue?: Option["value"];
 }>();
 
-const state = inject<FormProvider<string>>("form-wrapper")!;
+const state = inject<FormProvider<Option["value"]>>("form-wrapper")!;
 
 const field = computed(() => state.form.fields[props.name] ?? {});
 
@@ -74,7 +75,7 @@ function handleBlur() {
 
 onMounted(() => {
   state.init(props.name, {
-    value: "",
+    value: props.initialValue,
     required: props.required,
   });
 });

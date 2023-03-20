@@ -31,7 +31,11 @@ const emit = defineEmits<{
 const formState = reactive<{ [key: string]: Field }>({});
 
 function initField(name: string, field: Field) {
-  formState[name] = field;
+  formState[name] = {
+    required: field.required,
+    touched: false,
+    value: field.value,
+  };
 }
 
 const valid = computed(() => {

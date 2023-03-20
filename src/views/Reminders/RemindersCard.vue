@@ -5,7 +5,9 @@
         <template #activator>
           <icon-button flat rounded icon="more-vertical" />
         </template>
-        <menu-option icon="pencil">Edit</menu-option>
+        <router-link :to="`/reminders/${reminder.id}`">
+          <menu-option icon="pencil">Edit</menu-option>
+        </router-link>
         <menu-option icon="delete-bin">Delete</menu-option>
       </menu-options>
     </div>
