@@ -69,3 +69,7 @@ export async function saveReminder({
 
   return reminder;
 }
+
+export function deleteReminder(reminder: Reminder) {
+  return db.table(Databases.reminders).delete(reminder.id);
+}

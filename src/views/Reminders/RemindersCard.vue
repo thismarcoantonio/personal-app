@@ -1,5 +1,5 @@
 <template>
-  <li class="bg-white shadow mb-4 rounded border text-lg text-gray-800">
+  <card-container is="li">
     <div class="flex justify-end pt-2 px-2">
       <menu-options>
         <template #activator>
@@ -8,7 +8,9 @@
         <router-link :to="`/reminders/${reminder.id}`">
           <menu-option icon="pencil">Edit</menu-option>
         </router-link>
-        <menu-option icon="delete-bin">Delete</menu-option>
+        <menu-option @click="emit('delete', reminder)" icon="delete-bin">
+          Delete
+        </menu-option>
       </menu-options>
     </div>
     <div class="py-3 px-4">
@@ -25,16 +27,21 @@
         <span v-if="reminder.location">• {{ reminder.location }}</span>
       </p>
     </div>
-  </li>
+  </card-container>
 </template>
 
 <script lang="ts" setup>
 import type { Reminder } from "@/database";
 import { formatDate, formatDateTime } from "@/utils/date";
 import { MenuOptions, MenuOption } from "@/components/MenuOptions";
+import CardContainer from "@/components/CardContainer.vue";
 import IconButton from "@/components/IconButton.vue";
 
 defineProps<{
   reminder: Reminder;
+}>();
+
+const emit = defineEmits<{
+  (event: "delete", reminder: Reminder): void;
 }>();
 </script>

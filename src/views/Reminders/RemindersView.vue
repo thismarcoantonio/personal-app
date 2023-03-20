@@ -26,6 +26,7 @@
             v-for="reminder in day.reminders"
             :key="reminder.id"
             :reminder="reminder"
+            @delete="openDeleteModal"
           />
         </ul>
       </template>
@@ -37,24 +38,33 @@
     @close="closeCreatePage"
     @submitted="onSubmitted"
   />
+  <confirmation-modal
+    v-if="!!reminderToDelete"
+    title="Delete confirmation"
+    :description="`Do you really want to delete “${reminderToDelete?.title}” reminder?`"
+    @confirm="onDeleteConfirm"
+    @close="closeDeleteModal"
+  />
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dayjs from "dayjs";
-import { getReminders, type Reminder } from "@/database";
+import { deleteReminder, getReminders, type Reminder } from "@/database";
 import { formatDate } from "@/utils/date";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import EmptyContent from "@/components/EmptyContent.vue";
 import MainButton from "@/components/MainButton.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import RemindersCard from "./RemindersCard.vue";
 import RemindersSave from "./RemindersSave.vue";
 
 const route = useRoute();
 const router = useRouter();
 const reminders = ref<Reminder[]>([]);
+const reminderToDelete = ref<Reminder | null>(null);
 
 const remindersByDay = computed(() => {
   return reminders.value
@@ -110,6 +120,20 @@ function closeCreatePage() {
 async function onSubmitted() {
   reminders.value = await getReminders();
   closeCreatePage();
+}
+
+async function openDeleteModal(reminder: Reminder) {
+  reminderToDelete.value = reminder;
+}
+
+async function closeDeleteModal() {
+  reminderToDelete.value = null;
+}
+
+async function onDeleteConfirm() {
+  await deleteReminder(reminderToDelete.value!);
+  closeDeleteModal();
+  reminders.value = await getReminders();
 }
 
 onMounted(async () => {
