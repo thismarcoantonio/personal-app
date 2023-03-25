@@ -36,7 +36,7 @@ export const mainRoutes: (RouteRecordRaw & RouteMeta)[] = [
     meta: { icon: "list" },
   },
   {
-    path: "/notes",
+    path: "/notes/:action?",
     name: "notes",
     component: NotesView,
     meta: { icon: "booklet" },

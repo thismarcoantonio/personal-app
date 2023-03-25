@@ -8,7 +8,7 @@
     <empty-content
       v-if="!reminders.length"
       title="No reminders found"
-      description="Create import reminders of your daily life, so you can be notified about it"
+      description="Create important reminders of your daily life, so you can be notified about it"
     >
       <main-button @click="openCreatePage">Add reminder</main-button>
     </empty-content>

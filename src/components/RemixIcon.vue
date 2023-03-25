@@ -24,6 +24,9 @@ export type IconTypes =
   | "list"
   | "more-vertical"
   | "pencil"
+  | "pushpin-vertical"
+  | "pushpin"
+  | "search"
   | "store";
 
 const props = defineProps<{
