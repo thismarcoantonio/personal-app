@@ -51,7 +51,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dayjs from "dayjs";
-import { deleteReminder, getReminders, type Reminder } from "@/database";
+import { Reminders, type Reminder } from "@/database/Reminders";
 import { formatDate } from "@/utils/date";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
@@ -118,7 +118,7 @@ function closeCreatePage() {
 }
 
 async function onSubmitted() {
-  reminders.value = await getReminders();
+  reminders.value = await Reminders.list();
   closeCreatePage();
 }
 
@@ -131,12 +131,12 @@ async function closeDeleteModal() {
 }
 
 async function onDeleteConfirm() {
-  await deleteReminder(reminderToDelete.value!);
+  await Reminders.destroy(reminderToDelete.value!);
   closeDeleteModal();
-  reminders.value = await getReminders();
+  reminders.value = await Reminders.list();
 }
 
 onMounted(async () => {
-  reminders.value = await getReminders();
+  reminders.value = await Reminders.list();
 });
 </script>

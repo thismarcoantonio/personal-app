@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { saveReminder, Frequency, type Reminder } from "@/database";
+import { Frequency, Reminders, type Reminder } from "@/database/Reminders";
 import FullscreenDialog from "@/components/FullscreenDialog.vue";
 import FormWrapper from "@/components/Form/FormWrapper.vue";
 import TextField from "@/components/Form/TextField.vue";
@@ -83,7 +83,7 @@ async function handleSubmit(values: Omit<Reminder, "id">) {
     ? { ...values, id: props.reminder.id }
     : values;
 
-  await saveReminder(reminder);
+  await Reminders.create(reminder);
   emit("submitted");
 }
 </script>

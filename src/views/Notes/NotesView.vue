@@ -26,6 +26,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import type { Note } from "@/database/Notes";
 import PageHeader from "@/components/PageHeader.vue";
 import IconButton from "@/components/IconButton.vue";
 import SearchField from "@/components/SearchField.vue";
@@ -34,20 +35,7 @@ import MainButton from "@/components/MainButton.vue";
 import NotesCard from "./NotesCard.vue";
 
 const search = ref("");
-const notes = ref([
-  {
-    id: 1,
-    title: "Github account",
-    body: "Email: thismarcoantonio@gmail.com\nPassword: testing12312",
-    pinned: true,
-  },
-  {
-    id: 2,
-    title: "Alternative stores",
-    body: "In order\nuseoutlaws.com.br\nkeydesign.com.br\nskiveonline.com.br (expensive)\nblueenstore.com\nleaodenemeia.com.br\ncodebrincosmasculinos.com.br (earings only)",
-    pinned: false,
-  },
-]);
+const notes = ref<Note[]>([]);
 
 const router = useRouter();
 

@@ -15,7 +15,7 @@
     <div class="py-3 px-4">
       {{ note.title }}
       <p class="text-sm text-gray-600 whitespace-pre notes-card__body">
-        {{ note.body }}
+        {{ note.description }}
       </p>
     </div>
   </card-container>
@@ -24,9 +24,10 @@
 <script lang="ts" setup>
 import CardContainer from "@/components/CardContainer.vue";
 import IconButton from "@/components/IconButton.vue";
+import type { Note } from "@/database/Notes";
 
 defineProps<{
-  note: any;
+  note: Note;
 }>();
 </script>
 
