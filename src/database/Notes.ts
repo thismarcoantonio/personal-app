@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { db, Databases } from "@/database";
 
 export interface Note {
@@ -16,6 +17,15 @@ class NotesTable {
 
   public list(): Promise<Note[]> {
     return this.db.toArray();
+  }
+
+  public async save(values: Partial<Note>): Promise<Note> {
+    const noteId = await this.db.put({
+      ...values,
+      createdAt: values.createdAt ?? dayjs().valueOf(),
+      updatedAt: dayjs().valueOf(),
+    });
+    return this.db.get(noteId);
   }
 }
 
